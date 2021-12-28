@@ -1,25 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import Recipe from './components/Recipe';
+import "./App.css"
 
-function App() {
+
+export default function App() {
+  const appId = "89fdef12";
+  const appKey = "8af9751f2768a859b6c1b4d51e0cdea6"
+  // const exampleReq = `https://api.edamam.com/search?q=chicken&app_id=${appId}&app_key=${appKey}`;
+
+
+  const [recipes, setRecipes] = useState([]);
+  const [search, setSearch] = useState("");
+  const [name, setName] = useState("panner");
+
+  useEffect(() => {
+    getRecipes();
+
+  }, [name])
+
+  const getRecipes = async () => {
+    const response = await fetch(`https://api.edamam.com/search?q=${name}&app_id=${appId}&app_key=${appKey}`);
+    const data = await response.json();
+    setRecipes(data.hits);
+    console.log(data.hits);
+  }
+
+  function updateSearch(e) {
+    setSearch(e.target.value)
+    // console.log(search);
+  }
+
+  function updateName(e) {
+    e.preventDefault();   // what is preventDefault();
+    setName(search);
+    setSearch('');
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='main-container'>
+      <h1 className='heading'>Recipe Spotter</h1>
+      <p className='description'>Search Any Recipe By Entering Any Fruit Or Vegetable Name </p>
+      <form onSubmit={updateName} className='search-from'>
+        <input className='search-bar' type="text" value={search} onChange={updateSearch} />
+        <button className='search-button' type='submit' >Search</button>
+
+      </form>
+      <div className="recipe">
+        {recipes.map(recipe => (   //imp and why we use map
+          <Recipe key={recipe.recipe.label}  // to remove error from console
+            title={recipe.recipe.label} // why two times"recipe.recipe.
+            calories={recipe.recipe.calories}
+            image={recipe.recipe.image}
+            ingredients={recipe.recipe.ingredients}
+          />
+        ))}
+      </div>
     </div>
   );
-}
+};
 
-export default App;
+// export default App;
