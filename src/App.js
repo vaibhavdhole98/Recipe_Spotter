@@ -31,7 +31,7 @@ export default function App() {
   }
 
   function updateName(e) {
-    e.preventDefault();   // what is preventDefault();
+    e.preventDefault(); 
     setName(search);
     setSearch('');
   }
@@ -45,9 +45,9 @@ export default function App() {
 
       </form>
       <div className="recipe">
-        {recipes.map(recipe => (   //imp and why we use map
-          <Recipe key={recipe.recipe.label}  // to remove error from console
-            title={recipe.recipe.label} // why two times"recipe.recipe.
+        {recipes.map(recipe => (  
+          <Recipe key={recipe.recipe.label}  
+            title={recipe.recipe.label}
             calories={recipe.recipe.calories}
             image={recipe.recipe.image}
             ingredients={recipe.recipe.ingredients}
